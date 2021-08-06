@@ -8,6 +8,7 @@ import { createServer, Server } from "http";
 import HealthCheckController  from "../controller/healthCheck.controller";
 import InvalidArgumentException from "../exceptions/invalidArgument.exception";
 import errorMiddleware from "../middleware/errorMiddleware.middleware";
+import validationRequest from "../middleware/validationRequest.middleware";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -73,7 +74,9 @@ export default class HttpApplication{
     }
 
     private initializeMiddlwares(middlewares? : Middleware[]){
+        //Note that orders matter in middlewares
         this.app.use(express.json());
+        this.app.use(validationRequest());
         this.app.use(errorMiddleware());
 
         if(middlewares)
