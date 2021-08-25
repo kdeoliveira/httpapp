@@ -1,16 +1,20 @@
 import { Request } from "express";
 import { Response } from "express-serve-static-core";
+import Controller from "../../../kdeoliveira.ioc/dist/controller";
 import BaseController from "./base.controller"
 
 
 
+@Controller({
+    path: "/.healthCheck"
+})
 export default class HealthCheckController extends BaseController{
-    constructor(){
-        super({uri: "/.healthCheck"});
+    constructor(public path : string){
+        super();
     }
 
-    protected routing(uri: string) : void{
-        this.router.get(uri, this.healthStatus)
+    protected routing() : void{
+        this.router.get(this.path, this.healthStatus)
     }
 
     private async healthStatus(request: Request, response: Response){

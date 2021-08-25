@@ -1,7 +1,7 @@
 import { EXCPETION_STATUS } from "../exceptions/enum.exception";
 import HttpException from "../exceptions/http.exception";
 import { NextFunction, Request, Response } from "express";
-import { Middleware } from "types/middleware.types";
+import { Middleware } from "../types/middleware.types";
 import {Logger} from "../logger";
 
 

@@ -1,8 +1,8 @@
 import { Middleware } from "../types/middleware.types";
 import {NextFunction, Request, Response} from "express";
 import {AnySchema} from "yup";
-import HttpException from "exceptions/http.exception";
-import { EXCPETION_STATUS } from "exceptions/enum.exception";
+import HttpException from "../exceptions/http.exception";
+import { EXCPETION_STATUS } from "../exceptions/enum.exception";
 
 
 //Validation request througn YUP

@@ -6,7 +6,8 @@
   "types": "dist/index",
   "scripts": {
     "start": "nodemon --config nodemon.json index.dev.ts",
-    "build": "tsc",
+    "serve": "ts-node-dev --respawn index.dev.ts",
+    "build": "rm -rf ./dist && tsc",
     "test": "jest --detectOpenHandles"
   },
   "author": "Kevin de Oliveira",
@@ -15,13 +16,17 @@
     "dist/**/*"
   ],
   "devDependencies": {
+    "@kdeoliveira/ioc": "file:../kdeoliveira.ioc",
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^16.4.12",
     "@types/yup": "^0.29.13",
     "nodemon": "^2.0.12",
+    "reflect-metadata": "^0.1.13",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "dependencies": {

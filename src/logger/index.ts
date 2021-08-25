@@ -14,7 +14,7 @@ const format = winston.format.printf(
     ({ timestamp, level, message }: TransformableInfo) => `${level.toUpperCase()} at ${timestamp} \n${message}`
 );
 
-const log = (directory : string) => winston.createLogger({
+const log = winston.createLogger({
     levels: winston.config.npm.levels,
     format: winston.format.combine(
         winston.format.timestamp({
@@ -26,7 +26,7 @@ const log = (directory : string) => winston.createLogger({
         new winstonDaily({
             level: "error",
             datePattern,
-            dirname: directory,
+            dirname: "logs/error",
             filename: '%DATE%.error.log',
             maxFiles: 30,
             json: false,
@@ -37,7 +37,7 @@ const log = (directory : string) => winston.createLogger({
         new winstonDaily({
             level: 'debug',
             datePattern,
-            dirname: directory,
+            dirname: "logs/debug",
             filename: `%DATE%.debug.log`,
             maxFiles: 30,
 
@@ -66,11 +66,11 @@ const log = (directory : string) => winston.createLogger({
 export class Logger {
     
     public static error(error : HttpException){
-        log("logs/error").error(`>>${error.name}<< ${error.status} : ${error.message}`)
+        log.error(`>>${error.name}<< ${error.status} : ${error.message}`)
     }
 
     public static debug(message : HttpException | string){
-        log("logs/debug").debug(
+        log.debug(
             message instanceof HttpException ? `>>${message.name}<< ${message.status} : ${message.message}` : message
         )
     }
