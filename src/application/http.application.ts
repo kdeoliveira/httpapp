@@ -10,6 +10,7 @@ import InvalidArgumentException from "../exceptions/invalidArgument.exception";
 import errorMiddleware from "../middleware/errorMiddleware.middleware";
 import Module from "@kdeoliveira/ioc";
 import { Logger } from "../logger";
+import helmet from "helmet";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -48,6 +49,8 @@ export default class HttpApplication{
         this.port = port;
         this.host = host;
         this.path = path ? () => path : () => "/";
+
+        this.app.use(helmet());
 
         if(cors === true){
             this.app.use(crossorigin());
