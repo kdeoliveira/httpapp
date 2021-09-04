@@ -5,15 +5,19 @@ node_js:
 
 before_script:
   - npm run setup
+  - npm run build
 
 script:
   - npm test
-
-after_success:
-  - npm pack
-
 
 branches:
   only:
     - master
     - dev
+
+deploy:
+  provider: script
+  script: bash deploy.sh
+  skip_cleanup: true
+  on:
+    all_branches: true

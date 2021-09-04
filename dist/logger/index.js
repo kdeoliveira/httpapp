@@ -36,18 +36,23 @@ const log = winston_1.default.createLogger({
             json: false,
             zippedArchive: true
         }),
-        new winston_1.default.transports.Console({
-            level: 'silly',
-            format: winston_1.default.format.combine(winston_1.default.format.splat(), winston_1.default.format.colorize({
-                level: true,
-                all: true,
-                colors: {
-                    error: 'red',
-                    debug: 'blue',
-                    info: 'white'
-                }
-            }))
-        })
+        process.env.NODE_ENV === "development" ?
+            new winston_1.default.transports.Console({
+                level: 'silly',
+                format: winston_1.default.format.combine(winston_1.default.format.splat(), winston_1.default.format.colorize({
+                    level: true,
+                    all: true,
+                    colors: {
+                        error: 'red',
+                        debug: 'blue',
+                        info: 'white'
+                    }
+                }))
+            })
+            :
+                new winston_1.default.transports.Console({
+                    silent: true
+                })
     ]
 });
 class Logger {

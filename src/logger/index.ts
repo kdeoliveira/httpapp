@@ -44,7 +44,7 @@ const log = winston.createLogger({
             json: false,
             zippedArchive: true
         }),
-
+        process.env.NODE_ENV === "development" ?
         new winston.transports.Console({
             level: 'silly',
             format: winston.format.combine(winston.format.splat(), winston.format.colorize({
@@ -57,6 +57,10 @@ const log = winston.createLogger({
                 }
                 
             }))
+        })
+        :
+        new winston.transports.Console({
+            silent: true
         })
     ]
 });

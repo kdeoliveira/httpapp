@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import express, { Application, Express } from "express";
 import crossorigin from "cors";
-import { Controller } from "../types/controller.types";
 import { Middleware } from "../types/middleware.types";
 import http from "http";
 export interface ApplicationConfig {
@@ -10,7 +9,7 @@ export interface ApplicationConfig {
     host: string;
     path?: string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
-    controllers: Controller[];
+    controllers: any[];
     middlewares?: Middleware[];
 }
 export default class HttpApplication {

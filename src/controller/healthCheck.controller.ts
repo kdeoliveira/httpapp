@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Response } from "express-serve-static-core";
-import Controller from "../../../kdeoliveira.ioc/dist/controller";
+import {Controller} from "@kdeoliveira/ioc";
 import BaseController from "./base.controller"
 
 

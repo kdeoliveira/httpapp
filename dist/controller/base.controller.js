@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 class BaseController {
-    constructor({ uri }) {
-        this.router = express_1.Router();
-        this.uri = uri.charAt(0) === '/' ? uri : "/".concat(uri);
-        this.routing(this.uri);
+    constructor() {
+        this.router = (0, express_1.Router)();
+        this.routing();
     }
 }
 exports.default = BaseController;
