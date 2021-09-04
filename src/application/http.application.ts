@@ -63,8 +63,8 @@ export default class HttpApplication{
         if(middlewares && !Array.isArray(middlewares))
             throw new InvalidArgumentException("Middlewares must be provided as an array");
 
-        this.initializeMiddlwares(middlewares);    
         this.initializeControllers(controllers);
+        this.initializeMiddlwares(middlewares);    
         
         this.server = createServer(this.app);
 
