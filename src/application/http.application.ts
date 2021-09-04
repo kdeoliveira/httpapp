@@ -1,13 +1,16 @@
 // import { ApplicationConfig } from "types/application.types";
 import express, { Application, Express } from "express";
 import crossorigin from "cors";
-import { Controller } from "types/controller.types";
-
-import { Middleware } from "types/middleware.types";
-import { createServer, Server } from "http";
+import { Controller } from "../types/controller.types";
+import cookieParser from "cookie-parser";
+import { Middleware } from "../types/middleware.types";
+import http, { createServer } from "http";
 import HealthCheckController  from "../controller/healthCheck.controller";
 import InvalidArgumentException from "../exceptions/invalidArgument.exception";
 import errorMiddleware from "../middleware/errorMiddleware.middleware";
+import Module from "@kdeoliveira/ioc";
+import { Logger } from "../logger";
+import helmet from "helmet";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -15,18 +18,16 @@ export interface ApplicationConfig{
     host: string;
     path?:string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
-    controllers: Controller[];
+    controllers: any[];
     middlewares?: Middleware[];
 }
 
-
-
 export default class HttpApplication{
     private app: Application;
-    private server: Server;
+    private server: http.Server;
     private port: number;
     private host: string;
-    private path : string;
+    public path : () => string;
 
     constructor(config : ApplicationConfig){
         if(!config)
@@ -39,13 +40,17 @@ export default class HttpApplication{
             path,
             cors,
             controllers,
-            middlewares
+            middlewares,
         } = config;
+
+        
 
         this.app = app ? app : express();
         this.port = port;
         this.host = host;
-        this.path = path ? path : "/";
+        this.path = path ? () => path : () => "/";
+
+        this.app.use(helmet());
 
         if(cors === true){
             this.app.use(crossorigin());
@@ -65,15 +70,26 @@ export default class HttpApplication{
 
     }
 
-    private initializeControllers(controllers : Controller[]){
-        
-        this.app.use(new HealthCheckController().router);
+    private initializeControllers(controllers : any[]){
+        controllers.push(HealthCheckController);
 
-        controllers.forEach(x => this.app.use(this.path, x.router));
+        let instances : Controller[] = [];
+
+        controllers.forEach(
+            (x) => instances.push(
+                Module.container(x)
+            )
+        );
+
+
+        instances.forEach(x => this.app.use(this.path(), x.router));
     }
 
     private initializeMiddlwares(middlewares? : Middleware[]){
+        //Note that orders matter in middlewares
         this.app.use(express.json());
+        this.app.use(cookieParser());
+        // this.app.use(validationRequest());
         this.app.use(errorMiddleware());
 
         if(middlewares)
@@ -84,7 +100,12 @@ export default class HttpApplication{
         return this.server;
     }
 
-    public listen(callback : () => void){
+    public getApplication(){
+        return this.app;
+    }
+
+    public listen(callback?: () => void) : void{
+        Logger.debug(`HTTP Application has started on port ${this.port}`);
         this.server.listen(this.port, this.host, callback);
     }
 

@@ -1,18 +1,19 @@
 import { Router } from "express";
-import { Controller } from "types/controller.types";
+import { Controller } from "../types/controller.types";
 
 
 export default abstract class BaseController implements Controller{
     public router : Router;
-    public readonly uri : string;
+    // readonly uri : string;
 
-    constructor({uri}: {uri : string}){
+    public readonly abstract path : string;
+
+    constructor(){
         this.router = Router();
-        this.uri = uri.charAt(0) === '/' ? uri : "/".concat(uri);
-        this.routing(this.uri);
+        this.routing();
     }
 
-    protected abstract routing(uri : string) : void;
+    protected abstract routing() : void;
 
 
 }

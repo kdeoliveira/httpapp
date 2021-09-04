@@ -4,10 +4,13 @@
   "description": "Express app for http server",
   "main": "dist/index",
   "types": "dist/index",
+  "homepage": "https://github.com/kdeoliveira/kdeoliveira.server",
   "scripts": {
     "start": "nodemon --config nodemon.json index.dev.ts",
-    "build": "tsc",
-    "test": "jest --detectOpenHandles"
+    "serve": "ts-node-dev --respawn index.dev.ts",
+    "setup": "npm install",
+    "build": "rm -rf ./dist && tsc",
+    "test": "jest --detectOpenHandles --verbose"
   },
   "author": "Kevin de Oliveira",
   "license": "ISC",
@@ -15,12 +18,18 @@
     "dist/**/*"
   ],
   "devDependencies": {
+    "@kdeoliveira/ioc": "git+https://kdeoliveira@github.com/kdeoliveira/kdeoliveira.ioc",
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.1",
     "@types/node": "^16.4.12",
+    "@types/yup": "^0.29.13",
     "nodemon": "^2.0.12",
+    "reflect-metadata": "^0.1.13",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -28,9 +37,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
+    "helmet": "^4.6.0",
     "jest": "^27.0.6",
     "module-alias": "^2.2.2",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5"
+    "winston-daily-rotate-file": "^4.5.5",
+    "yup": "^0.32.9"
   }
 }
