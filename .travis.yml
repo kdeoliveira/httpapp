@@ -3,8 +3,8 @@ language: node_js
 node_js:
   - lts/*
 
-before_script:
-  - npm run setup
+# before_script:
+#   - npm run setup
 
 script:
   - npm test
