@@ -1,6 +1,6 @@
-import "reflect-metadata"
-import Controller from "@kdeoliveira/ioc/dist/controller";
-import HttpApplication, {BaseController, HttpException} from "./src"
+// import "reflect-metadata"
+// import Controller from "@kdeoliveira/ioc/dist/controller";
+// import HttpApplication, {BaseController, HttpException} from "./src"
 
 //VERIFICATION MADE BY SNYK:
 //- csurf middleware to protect against cross-site request forgery (CSRF).
