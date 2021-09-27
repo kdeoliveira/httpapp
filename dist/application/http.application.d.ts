@@ -1,17 +1,18 @@
 /// <reference types="node" />
 import express, { Application, Express } from "express";
 import crossorigin from "cors";
-import { Controller } from "../types/controller.types";
 import { Middleware } from "../types/middleware.types";
 import http from "http";
+import { ContentSecurityPolicyOptions } from "helmet/dist/middlewares/content-security-policy";
 export interface ApplicationConfig {
     app?: Application | Express;
     port: number;
     host: string;
     path?: string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
-    controllers: Controller[];
+    controllers: any[];
     middlewares?: Middleware[];
+    contentSecurityPolicy?: ContentSecurityPolicyOptions | boolean;
 }
 export default class HttpApplication {
     private app;

@@ -1,6 +1,7 @@
 import BaseController from "./base.controller";
 export default class HealthCheckController extends BaseController {
-    constructor();
-    protected routing(uri: string): void;
+    path: string;
+    constructor(path: string);
+    protected routing(): void;
     private healthStatus;
 }

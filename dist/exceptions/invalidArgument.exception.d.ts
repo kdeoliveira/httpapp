@@ -1,4 +1,4 @@
 export default class InvalidArgumentException extends Error {
-    private readonly type;
+    readonly type: string;
     constructor(message?: string);
 }
