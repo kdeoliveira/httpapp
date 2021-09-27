@@ -11,6 +11,7 @@ import errorMiddleware from "../middleware/errorMiddleware.middleware";
 import Module from "@kdeoliveira/ioc";
 import { Logger } from "../logger";
 import helmet from "helmet";
+import { ContentSecurityPolicyOptions } from "helmet/dist/middlewares/content-security-policy";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -20,6 +21,7 @@ export interface ApplicationConfig{
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
     controllers: any[];
     middlewares?: Middleware[];
+    contentSecurityPolicy?: ContentSecurityPolicyOptions | boolean;
 }
 
 export default class HttpApplication{
@@ -41,6 +43,7 @@ export default class HttpApplication{
             cors,
             controllers,
             middlewares,
+            contentSecurityPolicy
         } = config;
 
         
@@ -50,7 +53,11 @@ export default class HttpApplication{
         this.host = host;
         this.path = path ? () => path : () => "/";
 
-        this.app.use(helmet());
+        this.app.use(
+            contentSecurityPolicy ? helmet({
+                contentSecurityPolicy
+            }) : 
+            helmet());
 
         if(cors === true){
             this.app.use(crossorigin());

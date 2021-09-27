@@ -18,12 +18,15 @@ class HttpApplication {
     constructor(config) {
         if (!config)
             throw new invalidArgument_exception_1.default();
-        const { app, port, host, path, cors, controllers, middlewares, } = config;
+        const { app, port, host, path, cors, controllers, middlewares, contentSecurityPolicy } = config;
         this.app = app ? app : (0, express_1.default)();
         this.port = port;
         this.host = host;
         this.path = path ? () => path : () => "/";
-        this.app.use((0, helmet_1.default)());
+        this.app.use(contentSecurityPolicy ? (0, helmet_1.default)({
+            contentSecurityPolicy
+        }) :
+            (0, helmet_1.default)());
         if (cors === true) {
             this.app.use((0, cors_1.default)());
         }
