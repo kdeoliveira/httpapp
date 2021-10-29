@@ -7,3 +7,7 @@ export { default as validationRequest } from "./middleware/validationRequest.mid
 export * from "./types/controller.types";
 export * from "./types/middleware.types";
 export * from "./logger";
+import "reflect-metadata";
+export { default as Module } from "./ioc/module";
+export { default as ControllerRoute } from "./ioc/controller";
+export { default as Service } from "./ioc/service";

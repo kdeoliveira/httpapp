@@ -21,7 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ioc_1 = require("@kdeoliveira/ioc");
+const __1 = require("..");
 const base_controller_1 = __importDefault(require("./base.controller"));
 let HealthCheckController = class HealthCheckController extends base_controller_1.default {
     constructor(path) {
@@ -38,7 +38,7 @@ let HealthCheckController = class HealthCheckController extends base_controller_
     }
 };
 HealthCheckController = __decorate([
-    (0, ioc_1.Controller)({
+    (0, __1.ControllerRoute)({
         path: "/.healthCheck"
     }),
     __metadata("design:paramtypes", [String])

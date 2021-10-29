@@ -1,11 +1,11 @@
 import { Request } from "express";
 import { Response } from "express-serve-static-core";
-import {Controller} from "@kdeoliveira/ioc";
+import ControllerRoute from "../ioc/controller";
 import BaseController from "./base.controller"
 
 
 
-@Controller({
+@ControllerRoute({
     path: "/.healthCheck"
 })
 export default class HealthCheckController extends BaseController{

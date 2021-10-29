@@ -8,10 +8,10 @@ import http, { createServer } from "http";
 import HealthCheckController  from "../controller/healthCheck.controller";
 import InvalidArgumentException from "../exceptions/invalidArgument.exception";
 import errorMiddleware from "../middleware/errorMiddleware.middleware";
-import Module from "@kdeoliveira/ioc";
 import { Logger } from "../logger";
 import helmet from "helmet";
 import { ContentSecurityPolicyOptions } from "helmet/dist/middlewares/content-security-policy";
+import Module from "../ioc/module";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -115,6 +115,4 @@ export default class HttpApplication{
         Logger.debug(`HTTP Application has started on port ${this.port}`);
         this.server.listen(this.port, this.host, callback);
     }
-
-
 }
