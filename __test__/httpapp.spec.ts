@@ -14,7 +14,7 @@ describe("The Http App class", () => {
 
         protected routing(): void {
             this.router.get(this.path, (req, res) => { throw new HttpException(400, "Test Error") });
-            this.router.get(`${this.path}/2`, (req, res) => {
+            this.router.get(`/checks`, (req, res) => {
                 res.send({
                     "response": "ok"
                 })
@@ -22,11 +22,33 @@ describe("The Http App class", () => {
         }
     }
 
-    let server = new HttpApplication({
+    const app = new HttpApplication({
         port: 4000,
         host: "0.0.0.0",
         controllers: [TestController]
-    }).getServer();
+    });
+
+    let server = app.getServer();
+
+    describe("Middleware initialization", () => {
+        it("should return expected value", (done) => {
+            request(server).get("/checks").then((res) => { expect(res.body).toEqual({ "response": "ok" }); done() })
+        });
+
+        it("body should return in json format", (done) => {
+            request(server).get("/checks").expect(200).then((res) => {
+                expect(res.headers["content-type"]).toContain("application/json;")
+                done()
+            });
+        })
+
+        it("should return proper exception handler", (done) => {
+            request(server).get("/test").then((res) => {
+                expect(typeof res.body).toBe("object");
+                done()
+            })
+        })
+    })
 
     describe("Initial test page", () => {
         it("should return status OK", (done) => {
@@ -43,8 +65,8 @@ describe("The Http App class", () => {
 
         it("should return expected output", (done) => {
             const expectedValue = {
-                name: "HTTP_EXCEPTION", 
-                status: 400, 
+                name: "HTTP_EXCEPTION",
+                status: 400,
                 message: "Test Error"
             };
 
