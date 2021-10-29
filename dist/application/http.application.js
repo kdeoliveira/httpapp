@@ -11,9 +11,9 @@ const http_1 = require("http");
 const healthCheck_controller_1 = __importDefault(require("../controller/healthCheck.controller"));
 const invalidArgument_exception_1 = __importDefault(require("../exceptions/invalidArgument.exception"));
 const errorMiddleware_middleware_1 = __importDefault(require("../middleware/errorMiddleware.middleware"));
-const ioc_1 = __importDefault(require("@kdeoliveira/ioc"));
 const logger_1 = require("../logger");
 const helmet_1 = __importDefault(require("helmet"));
+const module_1 = __importDefault(require("../ioc/module"));
 class HttpApplication {
     constructor(config) {
         if (!config)
@@ -44,7 +44,7 @@ class HttpApplication {
     initializeControllers(controllers) {
         controllers.push(healthCheck_controller_1.default);
         let instances = [];
-        controllers.forEach((x) => instances.push(ioc_1.default.container(x)));
+        controllers.forEach((x) => instances.push(module_1.default.container(x)));
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
     initializeMiddlwares(middlewares) {

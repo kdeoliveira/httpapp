@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validationRequest = exports.errorMiddleware = exports.HttpException = exports.InvalidArgument = exports.BaseController = exports.default = void 0;
+exports.Service = exports.ControllerRoute = exports.Module = exports.validationRequest = exports.errorMiddleware = exports.HttpException = exports.InvalidArgument = exports.BaseController = exports.default = void 0;
 var http_application_1 = require("./application/http.application");
 Object.defineProperty(exports, "default", { enumerable: true, get: function () { return __importDefault(http_application_1).default; } });
 var base_controller_1 = require("./controller/base.controller");
@@ -29,4 +29,11 @@ Object.defineProperty(exports, "validationRequest", { enumerable: true, get: fun
 __exportStar(require("./types/controller.types"), exports);
 __exportStar(require("./types/middleware.types"), exports);
 __exportStar(require("./logger"), exports);
+require("reflect-metadata");
+var module_1 = require("./ioc/module");
+Object.defineProperty(exports, "Module", { enumerable: true, get: function () { return __importDefault(module_1).default; } });
+var controller_1 = require("./ioc/controller");
+Object.defineProperty(exports, "ControllerRoute", { enumerable: true, get: function () { return __importDefault(controller_1).default; } });
+var service_1 = require("./ioc/service");
+Object.defineProperty(exports, "Service", { enumerable: true, get: function () { return __importDefault(service_1).default; } });
 //# sourceMappingURL=index.js.map

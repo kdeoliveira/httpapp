@@ -1,12 +1,11 @@
-import { Controller } from "@kdeoliveira/ioc";
 import "reflect-metadata";
-import HttpApplication, { BaseController, HttpException } from "../src";
+
+import HttpApplication, { BaseController, ControllerRoute, HttpException } from "../src";
 import request from "supertest";
-import { object } from "yup/lib/locale";
 
 
 describe("The Http App class", () => {
-    @Controller({
+    @ControllerRoute({
         path: "test/"
     })
     //@ts-ignore
