@@ -4,7 +4,6 @@ const express_1 = require("express");
 class BaseController {
     constructor() {
         this.router = (0, express_1.Router)();
-        this.routing();
     }
 }
 exports.default = BaseController;

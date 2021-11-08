@@ -14,13 +14,18 @@ export default class Store extends Map{
         if(classInstance)
             return classInstance;
 
+
+
+        const newClassInstance = new target(...instances);
+
         if(Reflect.hasMetadata(target.name, target)){
             const meta = Reflect.getMetadata(target.name, target);
 
-            Reflect.defineProperty(target.prototype, meta.name, {
+            Reflect.defineProperty(newClassInstance as any, meta.name, {
                 value: meta.value,
-                writable: true
-            })
+                writable: true,
+                enumerable: true
+            })          
 
             // Reflect.defineProperty(target.prototype, "local", {
             //     value: meta.value,
@@ -29,7 +34,6 @@ export default class Store extends Map{
 
         }
 
-        const newClassInstance = new target(...instances);
         if(Reflect.hasMetadata(target.name, target)){
             
             const meta = Reflect.getMetadata(target.name, target);
@@ -40,8 +44,6 @@ export default class Store extends Map{
                     writable: true,
                     enumerable: false
                 });
-
-               
             }
         }
         
@@ -52,6 +54,13 @@ export default class Store extends Map{
         return newClassInstance;
     }
 
+    public route(): void{
+        this.forEach((values) => {
+            if(Reflect.has(values, "routing") && typeof Reflect.get(values, "routing") === "function"){
+                Reflect.apply(values["routing"], values, []);
+            }
+        })
+    }
 
     public release(): void{
         this.forEach((values) => {

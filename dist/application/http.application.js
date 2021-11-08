@@ -44,7 +44,12 @@ class HttpApplication {
     initializeControllers(controllers) {
         controllers.push(healthCheck_controller_1.default);
         let instances = [];
-        controllers.forEach((x) => instances.push(module_1.default.container(x)));
+        controllers.forEach((x) => {
+            instances.push(module_1.default.container(x));
+        });
+        for (var e of instances) {
+            e.routing();
+        }
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
     initializeMiddlwares(middlewares) {

@@ -8,18 +8,19 @@ class Store extends Map {
         const classInstance = this.get(target);
         if (classInstance)
             return classInstance;
+        const newClassInstance = new target(...instances);
         if (Reflect.hasMetadata(target.name, target)) {
             const meta = Reflect.getMetadata(target.name, target);
-            Reflect.defineProperty(target.prototype, meta.name, {
+            Reflect.defineProperty(newClassInstance, meta.name, {
                 value: meta.value,
-                writable: true
+                writable: true,
+                enumerable: true
             });
             // Reflect.defineProperty(target.prototype, "local", {
             //     value: meta.value,
             //     writable: true
             // })
         }
-        const newClassInstance = new target(...instances);
         if (Reflect.hasMetadata(target.name, target)) {
             const meta = Reflect.getMetadata(target.name, target);
             if (!Reflect.has(target, "release") && meta.type === "Controller") {
@@ -32,6 +33,13 @@ class Store extends Map {
         }
         this.set(target, newClassInstance);
         return newClassInstance;
+    }
+    route() {
+        this.forEach((values) => {
+            if (Reflect.has(values, "routing") && typeof Reflect.get(values, "routing") === "function") {
+                Reflect.apply(values["routing"], values, []);
+            }
+        });
     }
     release() {
         this.forEach((values) => {

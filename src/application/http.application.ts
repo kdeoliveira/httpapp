@@ -12,6 +12,7 @@ import { Logger } from "../logger";
 import helmet from "helmet";
 import { ContentSecurityPolicyOptions } from "helmet/dist/middlewares/content-security-policy";
 import Module from "../ioc/module";
+import { BaseController } from "..";
 
 export interface ApplicationConfig{
     app?: Application | Express;
@@ -80,14 +81,19 @@ export default class HttpApplication{
     private initializeControllers(controllers : any[]){
         controllers.push(HealthCheckController);
 
-        let instances : Controller[] = [];
+        let instances : BaseController[] = [];
+
+
 
         controllers.forEach(
-            (x) => instances.push(
-                Module.container(x)
-            )
+            (x) => {
+                instances.push(Module.container(x))
+            }
         );
-
+        
+        for(var e of instances){
+            e.routing();
+        }
 
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
