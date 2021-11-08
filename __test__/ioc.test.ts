@@ -18,11 +18,12 @@ class TestService{
 })
 //@ts-ignore
 class TestController extends BaseController {
-    constructor(public service: TestService, uri : string){
+    constructor(public service: TestService, public path : string){
         super();
     }
 
-    protected routing(){
+    public routing(){
+        console.log("Routing has been called ||", this.service.thisClass());
         
     }
 
@@ -47,9 +48,8 @@ describe("The Module Decorator on HttpApp", () => {
         it("should be a new instance of TestController", ()=> {
             expect(container).toBeInstanceOf(TestController);
         })
-    
+        
         it("should return the path value as defined in decorator", () => {
-    
             expect(container.path).toEqual("/posts");
         })
     
@@ -63,6 +63,20 @@ describe("The Module Decorator on HttpApp", () => {
 
             beforeAll(() => {
                 _injector = Module.of(TestController);
+            })
+
+            it("should route all controlller's instances", () => {
+
+
+                const spy = jest.spyOn(container, "routing");
+                
+                _injector.route();
+    
+                expect(spy).toBeCalled();
+    
+                spy.mockReset();
+                spy.mockRestore();
+                
             })
 
 

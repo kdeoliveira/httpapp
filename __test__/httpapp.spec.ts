@@ -12,7 +12,7 @@ describe("The Http App class", () => {
     class TestController extends BaseController {
         constructor(public path: string) { super() }
 
-        protected routing(): void {
+        public routing(): void {
             this.router.get(this.path, (req, res) => { throw new HttpException(400, "Test Error") });
             this.router.get(`/checks`, (req, res) => {
                 res.send({

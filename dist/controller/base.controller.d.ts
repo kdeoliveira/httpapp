@@ -4,5 +4,5 @@ export default abstract class BaseController implements Controller {
     router: Router;
     abstract readonly path: string;
     constructor();
-    protected abstract routing(): void;
+    abstract routing(): void;
 }

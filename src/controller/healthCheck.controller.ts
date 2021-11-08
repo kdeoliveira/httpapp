@@ -13,7 +13,7 @@ export default class HealthCheckController extends BaseController{
         super();
     }
 
-    protected routing() : void{
+    public routing() : void{
         this.router.get(this.path, this.healthStatus)
     }
 
