@@ -11,6 +11,7 @@ class Store extends Map {
         const newClassInstance = new target(...instances);
         if (Reflect.hasMetadata(target.name, target)) {
             const meta = Reflect.getMetadata(target.name, target);
+            //Adding data members to contained class
             Reflect.defineProperty(newClassInstance, meta.name, {
                 value: meta.value,
                 writable: true,
@@ -20,9 +21,7 @@ class Store extends Map {
             //     value: meta.value,
             //     writable: true
             // })
-        }
-        if (Reflect.hasMetadata(target.name, target)) {
-            const meta = Reflect.getMetadata(target.name, target);
+            //Writing realease method to Controllers class
             if (!Reflect.has(target, "release") && meta.type === "Controller") {
                 Object.defineProperty(newClassInstance, "release", {
                     value: () => "release",
