@@ -1,16 +1,61 @@
 import "reflect-metadata";
 
-import HttpApplication, { BaseController, ControllerRoute, HttpException } from "../src";
+import HttpApplication, { BaseController, BaseService, ControllerRoute, HttpException, Service } from "../src";
 import request from "supertest";
 
+interface databaseType {
+    id: number;
+    val: string;
+}
+
+var database : databaseType[] = 
+[
+    {
+        id: 1,
+        val: "Nisi in reprehenderit in amet.",
+    },
+    {
+        id: 2,
+        val: "Laborum labore Lorem dolor occaecat aliqua incididunt."
+    },
+    {
+        id: 3,
+        val: "Culpa quis in amet pariatur id."
+    }
+];
 
 describe("The Http App class", () => {
+
+    @Service({
+        model: database
+    })
+    //@ts-ignore
+    class TestService extends BaseService<databaseType[]>{
+        constructor(
+            public model : databaseType[]
+        ){
+            super();
+        }
+
+
+        
+        public getAll = () => {
+            return this.model;
+        }
+
+        public getById = (id: number) => {
+            return this.model.filter((x) => {
+                return (x.id === id)
+            })
+        }
+    }
+
     @ControllerRoute({
         path: "test/"
     })
     //@ts-ignore
     class TestController extends BaseController {
-        constructor(public path: string) { super() }
+        constructor(public path: string, public service : TestService) { super() }
 
         public routing(): void {
             this.router.get(this.path, (req, res) => { throw new HttpException(400, "Test Error") });
@@ -18,6 +63,13 @@ describe("The Http App class", () => {
                 res.send({
                     "response": "ok"
                 })
+            })
+
+            this.router.get(this.path+":id", (req, res) => {
+                const param = req.params["id"];
+                res.status(200).send(
+                    this.service.getById(Number(param)) 
+                )
             })
         }
     }
@@ -30,7 +82,7 @@ describe("The Http App class", () => {
 
     let server = app.getServer();
 
-    describe("Middleware initialization", () => {
+    describe("Middleware and Controller initialization", () => {
         it("should return expected value", (done) => {
             request(server).get("/checks").then((res) => { expect(res.body).toEqual({ "response": "ok" }); done() })
         });
@@ -74,6 +126,17 @@ describe("The Http App class", () => {
                 (res) => {
 
                     expect(res.body).toEqual(expectedValue)
+                    done();
+                }
+            )
+        })
+    })
+
+    describe("WHen executing request handlers", () => {
+        it("should execute service and return value based on params provided", (done) => {
+            request(server).get("/test/1").expect(200).then(
+                (res) => {
+                    expect(res.body).toEqual([database[0]]);
                     done();
                 }
             )

@@ -1,16 +1,21 @@
 import "reflect-metadata";
-import { ControllerRoute, Module, Service,BaseController } from "../src";
+import { ControllerRoute, Module, Service,BaseController, BaseService } from "../src";
 import Store from "../src/ioc/store";
 
 
-@Service()
+@Service({
+    model: "whatever"
+})
 //@ts-ignore
-class TestService{
-    constructor(){}
+class TestService extends BaseService<string>{
+    constructor(public model : string){
+        super();
+    } 
 
     thisClass(){
-        return "TestService";
+        return "TestService:"+this.model;
     }
+    
 }
 
 @ControllerRoute({
@@ -24,9 +29,7 @@ class TestController extends BaseController {
 
     public routing(){
         console.log("Routing has been called ||", this.service.thisClass());
-        
     }
-
 }
 
 
@@ -50,7 +53,7 @@ describe("The Module Decorator on HttpApp", () => {
         })
         
         it("should return the path value as defined in decorator", () => {
-            expect(container.path).toEqual("/posts");
+            expect(container.path).toEqual("/posts/");
         })
     
         it("should create a new instance of decorated service", () => {
