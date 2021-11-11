@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Service = exports.ControllerRoute = exports.Module = exports.validationRequest = exports.errorMiddleware = exports.HttpException = exports.InvalidArgument = exports.BaseController = exports.default = void 0;
+exports.Service = exports.ControllerRoute = exports.Module = exports.BaseService = exports.validationRequest = exports.errorMiddleware = exports.HttpException = exports.InvalidArgument = exports.BaseController = exports.default = void 0;
 var http_application_1 = require("./application/http.application");
 Object.defineProperty(exports, "default", { enumerable: true, get: function () { return __importDefault(http_application_1).default; } });
 var base_controller_1 = require("./controller/base.controller");
@@ -26,6 +26,8 @@ var errorMiddleware_middleware_1 = require("./middleware/errorMiddleware.middlew
 Object.defineProperty(exports, "errorMiddleware", { enumerable: true, get: function () { return __importDefault(errorMiddleware_middleware_1).default; } });
 var validationRequest_middleware_1 = require("./middleware/validationRequest.middleware");
 Object.defineProperty(exports, "validationRequest", { enumerable: true, get: function () { return __importDefault(validationRequest_middleware_1).default; } });
+var base_service_1 = require("./service/base.service");
+Object.defineProperty(exports, "BaseService", { enumerable: true, get: function () { return __importDefault(base_service_1).default; } });
 __exportStar(require("./types/controller.types"), exports);
 __exportStar(require("./types/middleware.types"), exports);
 __exportStar(require("./logger"), exports);

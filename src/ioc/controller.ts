@@ -6,6 +6,8 @@ const ControllerRoute = ({path}: {path : string}) : ConstructorDecorator<Type<ob
 
     if(path.charAt(0) !== '/')
         path = '/'.concat(path);
+    if(path.charAt(path.length-1) !== '/')
+        path = path.concat('/');
 
     //Create decorator that can initialize the baseURI and other secondary parameters for controllers, middlewares and services
 

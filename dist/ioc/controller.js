@@ -7,6 +7,8 @@ const base_controller_1 = __importDefault(require("../controller/base.controller
 const ControllerRoute = ({ path }) => {
     if (path.charAt(0) !== '/')
         path = '/'.concat(path);
+    if (path.charAt(path.length - 1) !== '/')
+        path = path.concat('/');
     //Create decorator that can initialize the baseURI and other secondary parameters for controllers, middlewares and services
     return (target) => {
         //Eventually each shared type/lib should be separated in a unique package
