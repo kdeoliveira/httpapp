@@ -58,7 +58,10 @@ export default class HttpApplication{
             contentSecurityPolicy ? helmet({
                 contentSecurityPolicy
             }) : 
-            helmet());
+        helmet());
+
+        this.app.use(express.json());
+        this.app.use(cookieParser());
 
         if(cors === true){
             this.app.use(crossorigin());
@@ -99,9 +102,7 @@ export default class HttpApplication{
     }
 
     private initializeMiddlwares(middlewares? : Middleware[]){
-        //Note that orders matter in middlewares
-        this.app.use(express.json());
-        this.app.use(cookieParser());
+
         // this.app.use(validationRequest());
         this.app.use(errorMiddleware());
 
