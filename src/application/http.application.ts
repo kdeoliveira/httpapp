@@ -21,7 +21,7 @@ export interface ApplicationConfig{
     path?:string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
     controllers: any[];
-    middlewares?: Middleware[];
+    middlewares?: any[];
     contentSecurityPolicy?: ContentSecurityPolicyOptions | boolean;
 }
 
@@ -101,7 +101,7 @@ export default class HttpApplication{
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
 
-    private initializeMiddlwares(middlewares? : Middleware[]){
+    private initializeMiddlwares(middlewares? : any[]){
 
         // this.app.use(validationRequest());
         this.app.use(errorMiddleware());
