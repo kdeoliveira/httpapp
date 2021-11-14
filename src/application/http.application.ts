@@ -74,8 +74,11 @@ export default class HttpApplication{
         if(middlewares && !Array.isArray(middlewares))
             throw new InvalidArgumentException("Middlewares must be provided as an array");
 
+        this.initializeMiddlwares(middlewares);
         this.initializeControllers(controllers);
-        this.initializeMiddlwares(middlewares);    
+
+        //Note that this middleware must be last since it depends on occasional next(new Exception()) call
+        this.app.use(errorMiddleware());
         
         this.server = createServer(this.app);
 
@@ -102,10 +105,6 @@ export default class HttpApplication{
     }
 
     private initializeMiddlwares(middlewares? : any[]){
-
-        // this.app.use(validationRequest());
-        this.app.use(errorMiddleware());
-
         if(middlewares)
             middlewares.forEach(x => this.app.use(x))
     }
