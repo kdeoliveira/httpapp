@@ -27,6 +27,8 @@ class HttpApplication {
             contentSecurityPolicy
         }) :
             (0, helmet_1.default)());
+        this.app.use(express_1.default.json());
+        this.app.use((0, cookie_parser_1.default)());
         if (cors === true) {
             this.app.use((0, cors_1.default)());
         }
@@ -53,9 +55,6 @@ class HttpApplication {
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
     initializeMiddlwares(middlewares) {
-        //Note that orders matter in middlewares
-        this.app.use(express_1.default.json());
-        this.app.use((0, cookie_parser_1.default)());
         // this.app.use(validationRequest());
         this.app.use((0, errorMiddleware_middleware_1.default)());
         if (middlewares)
