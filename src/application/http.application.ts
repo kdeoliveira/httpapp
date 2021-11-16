@@ -21,7 +21,10 @@ export interface ApplicationConfig{
     path?:string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
     controllers: any[];
-    middlewares?: any[];
+    middlewares?: {
+        reqStack?: any[],
+        resStack?: any[]
+    };
     contentSecurityPolicy?: ContentSecurityPolicyOptions | boolean;
 }
 
@@ -71,14 +74,18 @@ export default class HttpApplication{
 
         if(!Array.isArray(controllers))
             throw new InvalidArgumentException("Controlller must be provided as an array");
-        if(middlewares && !Array.isArray(middlewares))
+        if(middlewares && !Object.values(middlewares).every((x => Array.isArray(x))))
             throw new InvalidArgumentException("Middlewares must be provided as an array");
 
-        this.initializeMiddlwares(middlewares);
+
+
+        if(middlewares) this.initializeMiddlwares(middlewares.reqStack);
         this.initializeControllers(controllers);
 
         //Note that this middleware must be last since it depends on occasional next(new Exception()) call
-        this.app.use(errorMiddleware());
+        if(middlewares) this.initializeMiddlwares(middlewares.resStack);
+        // errorMiddleware is exported and provided by the package. If required, adds to middleware config
+        // this.app.use(errorMiddleware());
         
         this.server = createServer(this.app);
 
