@@ -10,7 +10,10 @@ export interface ApplicationConfig {
     path?: string;
     cors?: crossorigin.CorsOptions | crossorigin.CorsOptionsDelegate | boolean;
     controllers: any[];
-    middlewares?: any[];
+    middlewares?: {
+        reqStack?: any[];
+        resStack?: any[];
+    };
     contentSecurityPolicy?: ContentSecurityPolicyOptions | boolean;
 }
 export default class HttpApplication {
