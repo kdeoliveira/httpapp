@@ -15,7 +15,7 @@ const errorMiddleware : Middleware = () => (error: HttpException, request: Reque
 
     
 
-    response.status(status).send({name, status, message})
+    response.status(status).send({name: name, status: status, message: message})
 }
 
 export default errorMiddleware;

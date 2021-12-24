@@ -127,7 +127,6 @@ describe("The Http App class", () => {
 
             request(server).get("/test").expect(400).then(
                 (res) => {
-
                     expect(res.body).toEqual(expectedValue)
                     done();
                 }
