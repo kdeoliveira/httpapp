@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import HttpApplication, { BaseController, BaseService, ControllerRoute, HttpException, Service } from "../src";
+import HttpApplication, { BaseController, BaseService, ControllerRoute, errorMiddleware, HttpException, Service } from "../src";
 import request from "supertest";
 
 interface databaseType {
@@ -77,7 +77,10 @@ describe("The Http App class", () => {
     const app = new HttpApplication({
         port: 4000,
         host: "0.0.0.0",
-        controllers: [TestController]
+        controllers: [TestController],
+        middlewares: {
+            resStack: [errorMiddleware()]
+        }
     });
 
     let server = app.getServer();

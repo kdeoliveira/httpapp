@@ -10,7 +10,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const http_1 = require("http");
 const healthCheck_controller_1 = __importDefault(require("../controller/healthCheck.controller"));
 const invalidArgument_exception_1 = __importDefault(require("../exceptions/invalidArgument.exception"));
-const errorMiddleware_middleware_1 = __importDefault(require("../middleware/errorMiddleware.middleware"));
 const logger_1 = require("../logger");
 const helmet_1 = __importDefault(require("helmet"));
 const module_1 = __importDefault(require("../ioc/module"));
@@ -37,10 +36,16 @@ class HttpApplication {
         }
         if (!Array.isArray(controllers))
             throw new invalidArgument_exception_1.default("Controlller must be provided as an array");
-        if (middlewares && !Array.isArray(middlewares))
+        if (middlewares && !Object.values(middlewares).every((x => Array.isArray(x))))
             throw new invalidArgument_exception_1.default("Middlewares must be provided as an array");
+        if (middlewares)
+            this.initializeMiddlwares(middlewares.reqStack);
         this.initializeControllers(controllers);
-        this.initializeMiddlwares(middlewares);
+        //Note that this middleware must be last since it depends on occasional next(new Exception()) call
+        if (middlewares)
+            this.initializeMiddlwares(middlewares.resStack);
+        // errorMiddleware is exported and provided by the package. If required, adds to middleware config
+        // this.app.use(errorMiddleware());
         this.server = (0, http_1.createServer)(this.app);
     }
     initializeControllers(controllers) {
@@ -55,8 +60,6 @@ class HttpApplication {
         instances.forEach(x => this.app.use(this.path(), x.router));
     }
     initializeMiddlwares(middlewares) {
-        // this.app.use(validationRequest());
-        this.app.use((0, errorMiddleware_middleware_1.default)());
         if (middlewares)
             middlewares.forEach(x => this.app.use(x));
     }
