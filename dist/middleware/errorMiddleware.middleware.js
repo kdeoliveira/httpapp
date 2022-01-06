@@ -7,7 +7,7 @@ const errorMiddleware = () => (error, request, response, next) => {
     const name = error.name || enum_exception_1.EXCPETION_STATUS.INTERNAL_ERROR;
     const message = error.message || `An error has occured on file ${error.file}`;
     logger_1.Logger.error(error);
-    response.status(status).send({ name, status, message });
+    response.status(status).send({ name: name, status: status, message: message });
 };
 exports.default = errorMiddleware;
 //# sourceMappingURL=errorMiddleware.middleware.js.map
