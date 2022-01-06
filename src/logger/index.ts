@@ -28,6 +28,7 @@ const log = winston.createLogger({
             datePattern,
             dirname: "logs/error",
             filename: '%DATE%.error.log',
+            maxSize: "1m",
             maxFiles: 30,
             json: false,
             handleExceptions: true,
@@ -40,7 +41,7 @@ const log = winston.createLogger({
             dirname: "logs/debug",
             filename: `%DATE%.debug.log`,
             maxFiles: 30,
-
+            maxSize: "1m",
             json: false,
             zippedArchive: true
         }),
